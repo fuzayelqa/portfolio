@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al_Fuzayel - QA Automation Analyst</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" href="img/fuzayel.jpg" type="image/x-icon">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#0d6efd',
+                        'dark-bg': '#1a1a2e',
+                        'card-bg': '#2e2e4a',
+                        'mid-bg': '#24243e',
+                        'text-light': '#f4f4f4',
+                        'secondary-gray': '#6c757d',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body{
+            scroll-behavior: smooth;
+        }
+        /* Base styles for the details element */
+        details {
+            display: block;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(108, 117, 125, 0.3); /* Secondary-gray border */
+            overflow: hidden; /* Important for animation containment */
+        }
+        
+        /* Summary (Header) styles */
+        summary {
+            cursor: pointer;
+            padding: 1rem;
+            background-color: #0d6efd; /* primary-blue */
+            color: #f4f4f4; /* text-light */
+            font-weight: bold;
+            display: block;
+            position: relative;
+            outline: none;
+            user-select: none;
+            transition: background-color 0.3s;
+        }
+
+        /* Triangle icon styling (hidden/replaced by Font Awesome) */
+        summary::marker, summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Content area styles */
+        .details-content {
+            padding: 1rem;
+            padding-top: 0.5rem;
+            color: #f4f4f4;
+            background-color: #2e2e4a; /* card-bg */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+        }
+
+        /* State when open */
+        details[open] summary {
+            background-color: #0c57c4; /* Slightly darker primary-blue */
+        }
+
+        details[open] .details-content {
+            max-height: 500px; /* Large enough value to cover content height */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* Icon rotation */
+        .details-icon {
+            transition: transform 0.3s;
+        }
+
+        details[open] .details-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Skill Bar Animation */
+        @keyframes fill-bar {
+            from { width: 0; }
+        }
+
+        .skill-bar-fill {
+            transition: width 1s ease-out;
+        }
+        
+        /* Scroll to top button */
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #scrollToTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-text-light font-sans">
+
+    <nav class="sticky top-0 z-50 bg-dark-bg/95 backdrop-blur-sm border-b-2 border-primary-blue shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#home-section" class="text-2xl font-bold text-primary-blue tracking-wider">AL-FUZAYEL</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home-section" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">HOME</a>
+                        <a href="#about" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">ABOUT</a>
+                        <a href="#services" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">SERVICES</a>
+                        <a href="#projects" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">PROJECTS</a>
+                        <a href="#experience" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">EXPERIENCE</a>
+                        <a href="#contact" class="text-text-light hover:text-primary-blue px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-card-bg/50">CONTACT</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-text-light hover:text-primary-blue hover:bg-card-bg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home-section" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">HOME</a>
+                <a href="#about" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">ABOUT</a>
+                <a href="#services" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">SERVICES</a>
+                <a href="#projects" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">PROJECTS</a>
+                <a href="#experience" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">EXPERIENCE</a>
+                <a href="#contact" class="text-text-light block px-3 py-2 rounded-md text-base font-medium hover:bg-card-bg hover:text-primary-blue">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home-section" class="pt-24 pb-16">
+        <div class="container mx-auto px-4 py-8 md:py-16">
+            <div class="grid lg:grid-cols-3 gap-10 items-center">
+                
+                <div class="lg:col-span-2 space-y-8">
+                    <h1 class="text-5xl md:text-6xl font-extrabold leading-tight">
+                        <span class="text-text-light">Ensuring</span> <strong class="text-primary-blue">Excellence:</strong> A <span class="text-primary-blue">QA Analyst</span> & Developer
+                    </h1>
+                    
+                    <div class="space-y-4 text-lg">
+                        <div class="flex items-start">
+                            <i class="fa fa-forward text-primary-blue mr-3 mt-1 fa-lg flex-shrink-0"></i>
+                            <p>Automate web testing using **Selenium** and **PyTest**. Write scripts to interact with elements, validate functionality, and achieve efficient testing.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fa fa-forward text-primary-blue mr-3 mt-1 fa-lg flex-shrink-0"></i>
+                            <p>Master **API testing** with **Postman**. Create requests, validate responses, and streamline testing processes for robust and efficient API testing solutions.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fa fa-forward text-primary-blue mr-3 mt-1 fa-lg flex-shrink-0"></i>
+                            <p>**JMeter** Expert: Mastering Apache JMeter for over a decade. Crafting optimal performance tests, tuning, and scaling for peak application performance.</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fa fa-forward text-primary-blue mr-3 mt-1 fa-lg flex-shrink-0"></i>
+                            <p>Manage projects and track bugs efficiently using **Jira** and **Azure DevOps** for seamless development lifecycle integration.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div class="bg-card-bg rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition duration-500">
+                        <div class="bg-primary-blue text-text-light p-4 text-center">
+                            <h3 class="text-2xl font-semibold">QA Testing</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-center mb-4 text-secondary-gray">Web, Performance, API & LifeCycle Management</p>
+                            <ul class="list-none space-y-2 text-sm">
+                                <li class="py-1 border-b border-secondary-gray/50 flex justify-between items-center"><span class="font-medium">SDLC & STLC</span> <i class="fa-solid fa-check text-primary-blue"></i></li>
+                                <li class="py-1 border-b border-secondary-gray/50 flex justify-between items-center"><span class="font-medium">Web Automation with SELENIUM</span> <i class="fa-solid fa-check text-primary-blue"></i></li>
+                                <li class="py-1 border-b border-secondary-gray/50 flex justify-between items-center"><span class="font-medium">API Testing with Postman</span> <i class="fa-solid fa-check text-primary-blue"></i></li>
+                                <li class="py-1 border-b border-secondary-gray/50 flex justify-between items-center"><span class="font-medium">Jira & Azure DevOps</span> <i class="fa-solid fa-check text-primary-blue"></i></li>
+                                <li class="py-1 flex justify-between items-center"><span class="font-medium">JMETER Performance Testing</span> <i class="fa-solid fa-check text-primary-blue"></i></li>
+                            </ul>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="https://docs.google.com/document/d/1dbfnrfIlFLYFZY9Ho5VM4PAAObcfP3SQA6fwqVl1Tko/edit?usp=sharing" target="_blank" class="w-full inline-block text-center py-3 border-2 border-primary-blue text-primary-blue font-bold rounded-lg hover:bg-primary-blue hover:text-white transition duration-300">
+                                Selenium Docs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-1 bg-primary-blue/70"></div>
+
+    <section id="about" class="py-16 bg-mid-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary-blue inline-block border-b-4 border-secondary-gray/50 pb-1">ABOUT ME</h2>
+                <p class="mt-4 text-lg max-w-3xl mx-auto text-secondary-gray">Experienced QA Automation Engineer adept at designing, implementing, and executing automated tests for robust and high-quality software applications.</p>
+            </div>
+            <div class="grid lg:grid-cols-3 gap-10 items-center">
+                <div class="lg:col-span-1 text-center">
+                    <img src="img/fuzayel.jpg" alt="Ozih Uddin Al Fuzayel - QA Analyst and Developer" class="w-64 h-64 mx-auto object-cover rounded-lg border-4 border-primary-blue flex items-center justify-center text-secondary-gray text-sm" onerror="this.onerror=null;this.src='placeholder.svg';" style="display: block;">
+                </div>
+                <div class="lg:col-span-2 text-left space-y-6">
+                    <h3 class="text-3xl md:text-4xl font-bold">
+                        Hey, My Name is <strong class="text-primary-blue">OZIH UDDIN AL FUZAYEL.</strong> I am a QA Tester, FrontEnd Developer.
+                    </h3>
+                    <p class="text-lg">
+                        "Hello, I'm Ozih Uddin Al Fuzayel. Proficient in HTML5, CSS3, JavaScript, JSON, Bootstrap, WordPress, SQL, Python** (Selenium, Telegram Chatbot, QR Code creation). Skilled in Postman and Newman, JMeter, Jira and Azure DevOps for efficient testing and project management. Passionate about creating seamless web experiences and automating tasks for enhanced efficiency and productivity."
+                    </p>
+                    <p class="text-lg text-secondary-gray">
+                        Experienced QA Tester with a keen eye for detail and proficiency in various testing methodologies. Skilled in identifying and reporting bugs, ensuring software reliability. Committed to delivering high-quality products through rigorous testing processes, contributing to seamless user experiences and client satisfaction.
+                    </p>
+                    <a href="https://github.com/fuzayelqa" target="_blank" class="inline-flex items-center text-primary-blue hover:text-primary-blue/80 font-semibold transition duration-300">
+                        <i class="fa-brands fa-github text-3xl mr-2"></i> View My GitHub Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-1 bg-primary-blue/70"></div>
+
+    <section id="services" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary-blue inline-block border-b-4 border-secondary-gray/50 pb-1">SERVICES</h2>
+                <p class="mt-4 text-lg max-w-3xl mx-auto text-secondary-gray">Proficient QA Tester ensures software quality. Frontend Developer crafts responsive, visually appealing interfaces for seamless user experiences.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 py-8">
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 text-center transform hover:translate-y-[-5px] transition duration-300 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-primary-blue mb-4"><i class="fa-solid fa-robot text-4xl"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 border-b border-primary-blue/50 pb-2">Test Automation</h3>
+                        <p class="text-secondary-gray mb-6">Proficient QA Tester with expertise in automated testing using **Selenium, Postman, and JMeter**. Ensures software quality, identifies bugs, and enhances user experience for optimal performance.</p>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1dbfnrfIlFLYFZY9Ho5VM4PAAObcfP3SQA6fwqVl1Tko/edit?usp=sharing" target="_blank" class="inline-block bg-primary-blue text-white py-2 px-4 rounded-lg hover:bg-primary-blue/80 transition duration-300">SELENIUM Docs</a>
+                </div>
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 text-center transform hover:translate-y-[-5px] transition duration-300 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-primary-blue mb-4"><i class="fa-solid fa-code text-4xl"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 border-b border-primary-blue/50 pb-2">FrontEnd Development</h3>
+                        <p class="text-secondary-gray mb-6">Proficient in **HTML, CSS, and Bootstrap**. Expertise in crafting responsive, visually appealing web pages. Strong foundation in front-end development, ensuring seamless user experiences and visually stunning interfaces.</p>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1vub-v9hOhwdhIU6wfriUvW-XVv2jmTo071JIkZoKmy8/edit?usp=sharing" target="_blank" class="inline-block bg-primary-blue text-white py-2 px-4 rounded-lg hover:bg-primary-blue/80 transition duration-300">POSTMAN Docs</a>
+                </div>
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 text-center transform hover:translate-y-[-5px] transition duration-300 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="text-primary-blue mb-4"><i class="fa-solid fa-database text-4xl"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 border-b border-primary-blue/50 pb-2">SQL, WordPress & Python Automation</h3>
+                        <p class="text-secondary-gray mb-6">Experienced in **SQL, MySQL, and WordPress**. Proficient in database management, query optimization, and customizing WordPress sites. Also skilled in **Python** for **QR code** and **Telegram chatbot** creation.</p>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1IEcoMRV9KYq7e85zrQ_3Cvu7KWUBJ-_rP4rijHeplI4/edit?usp=sharing" target="_blank" class="inline-block bg-primary-blue text-white py-2 px-4 rounded-lg hover:bg-primary-blue/80 transition duration-300">JMETER Docs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-1 bg-primary-blue/70"></div>
+
+    <section id="projects" class="py-16 bg-mid-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary-blue inline-block border-b-4 border-secondary-gray/50 pb-1">PROJECTS</h2>
+                <p class="mt-4 text-lg max-w-3xl mx-auto text-secondary-gray">A showcase of my recent work in QA automation, front-end development, and utility scripts.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 py-8">
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-brands fa-python mr-2"></i> E-commerce Selenium Suite</h3>
+                    <p class="text-secondary-gray mb-4">A robust end-to-end automation test suite built with **Python** and **Selenium WebDriver** for a mock e-commerce platform. Focuses on user flows like login, search, and checkout.</p>
+                    <p class="text-sm font-medium">Technologies: Python, Selenium, PyTest, POM</p>
+                    <div class="mt-4">
+                        <a href="https://github.com/fuzayelqa/automation" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-solid fa-cloud mr-2"></i> REST API Validation</h3>
+                    <p class="text-secondary-gray mb-4">A comprehensive collection in **Postman** to test a series of REST APIs, including environment setup, pre-request scripts, and detailed response schema validations.</p>
+                    <p class="text-sm font-medium">Technologies: Postman, JavaScript (Tests), JSON</p>
+                    <div class="mt-4">
+                        <a href="https://github.com/fuzayelqa/postman-api-tests" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-solid fa-laptop-code mr-2"></i> Modern Portfolio Design & Manual Testing</h3>
+                    <p class="text-secondary-gray mb-4">A fully responsive, dark-themed portfolio template built using modern **HTML5, CSS3, and Tailwind CSS**. Optimized for speed and accessibility across all devices.</p>
+                    <p class="text-sm font-medium">Technologies: HTML5, CSS3, Bootstrap</p>
+                    <div class="mt-4">
+                        <a href="https://github.com/fuzayelqa/manuall-testing" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-solid fa-gauge-high mr-2"></i> High-Concurrency JMeter Test</h3>
+                    <p class="text-secondary-gray mb-4">A comprehensive JMeter test plan to simulate 1000 concurrent users accessing a web application. Focused on identifying performance bottlenecks and scalability limits.</p>
+                    <p class="text-sm font-medium">Technologies: Apache JMeter, Load Testing, Performance Analysis</p>
+                    <div class="mt-4">
+                        <a href="https://jmetertestresult.netlify.app/" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-solid fa-robot mr-2"></i> Allure Report </h3>
+                    <p class="text-secondary-gray mb-4">A custom-built **Telegram chatbot** using Python's `python-telegram-bot` library that performs tasks like fetching daily news headlines and generating custom QR codes on demand.</p>
+                    <p class="text-sm font-medium">Technologies: Python, Selenium, PyTest</p>
+                    <div class="mt-4">
+                        <a href="https://allurereportpytest.netlify.app/" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-card-bg rounded-xl shadow-lg p-6 transform hover:shadow-primary-blue/50 hover:shadow-xl transition duration-300">
+                    <h3 class="text-2xl font-semibold mb-3 text-primary-blue"><i class="fa-solid fa-database mr-2"></i> E-Commerce SQL Schema</h3>
+                    <p class="text-secondary-gray mb-4">Design and implementation of an optimized SQL database schema (MySQL) for a multi-vendor e-commerce platform, including efficient query examples for complex reporting.</p>
+                    <p class="text-sm font-medium">Technologies: SQL, MySQL, Database Normalization, Query Optimization</p>
+                    <div class="mt-4">
+                        <a href="https://pytestproject.netlify.app/" target="_blank" class="text-sm font-semibold text-text-light hover:text-primary-blue/80 border-b border-text-light/50 hover:border-primary-blue transition duration-300">
+                            <i class="fa-brands fa-github mr-1"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-1 bg-primary-blue/70"></div>
+
+    <section id="experience" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary-blue inline-block border-b-4 border-secondary-gray/50 pb-1">EXPERIENCE & SKILLS</h2>
+                <p class="mt-4 text-lg max-w-3xl mx-auto text-secondary-gray">Proficient in automated testing with **Selenium, Postman, and JMeter**. Experienced in project management tools like **Jira** and **Azure DevOps**. Skilled in **HTML5, CSS3, JavaScript, SQL, and Python** for development and utility scripting.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-10 py-8">
+                <div class="space-y-4">
+                    
+                    <details open>
+                        <summary class="flex justify-between items-center">
+                            SELENIUM WEBDRIVER 
+                            <i class="fa-solid fa-chevron-down details-icon text-sm"></i>
+                        </summary>
+                        <div class="details-content">
+                            Proficient in Python-driven **Selenium WebDriver**. Expertise in automated testing, web scraping, and UI interactions for robust and efficient software quality assurance. Strong problem-solving and scripting skills.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary class="flex justify-between items-center">
+                            POSTMAN
+                            <i class="fa-solid fa-chevron-down details-icon text-sm"></i>
+                        </summary>
+                        <div class="details-content">
+                            Skilled in **Postman** for API testing and automation. Proficient in creating and managing test suites, running collections, and validating responses for seamless software development and integration.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary class="flex justify-between items-center">
+                            JMETER
+                            <i class="fa-solid fa-chevron-down details-icon text-sm"></i>
+                        </summary>
+                        <div class="details-content">
+                            Proficient in **JMeter**, specializing in performance testing and load testing of web applications. Expertise in simulating real-world user traffic to optimize system performance and ensure scalability.
+                        </div>
+                    </details>
+                    
+                    <details>
+                        <summary class="flex justify-between items-center">
+                            JIRA
+                            <i class="fa-solid fa-chevron-down details-icon text-sm"></i>
+                        </summary>
+                        <div class="details-content">
+                            Experienced in using **Jira** for agile project management, bug tracking, and issue management. Proficient in creating workflows, dashboards, and reporting to support development and QA teams.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary class="flex justify-between items-center">
+                            AZURE DEVOPS
+                            <i class="fa-solid fa-chevron-down details-icon text-sm"></i>
+                        </summary>
+                        <div class="details-content">
+                            Skilled in using **Azure DevOps** for test planning, release management, and pipeline integration. Expertise in tracking test cases and managing work items within the DevOps environment.
+                        </div>
+                    </details>
+
+                </div>
+
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">Selenium With Python (90%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="90"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">Postman (85%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="85"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">Jira (80%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="80"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">JMeter (75%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="75"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">Azure DevOps (70%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="70"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-lg">FrontEnd Coding (70%)</h4>
+                        <div class="w-full bg-secondary-gray/30 rounded-full h-3">
+                            <div class="bg-primary-blue h-3 rounded-full skill-bar-fill" data-percent="70"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="h-1 bg-primary-blue/70"></div>
+
+    <section id="contact" class="py-16 bg-mid-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-extrabold text-primary-blue inline-block border-b-4 border-secondary-gray/50 pb-1">Get in Touch</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10 items-center py-8">
+                <div>
+                    <h3 class="text-4xl font-bold mb-4">Contact Me Now</h3>
+                    <p class="text-lg text-secondary-gray mb-6">I'm here to assist you. Please share your contact information, and I'll reach out promptly. Your preferred method of contact (phone or email) would be greatly appreciated. Thank you.</p>
+                    
+                    <div class="flex space-x-6">
+                        <a href="https://www.facebook.com/ozihuddin.alfuzayel" target="_blank" class="text-primary-blue hover:text-primary-blue/80 transition duration-300 text-2xl"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/being_fazl/" target="_blank" class="text-primary-blue hover:text-primary-blue/80 transition duration-300 text-2xl"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/ozih-uddin-al-fuzayel-02bb40217/" target="_blank" class="text-primary-blue hover:text-primary-blue/80 transition duration-300 text-2xl"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://twitter.com/AlFuzayel" target="_blank" class="text-primary-blue hover:text-primary-blue/80 transition duration-300 text-2xl"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://github.com/fuzayelqa" target="_blank" class="text-primary-blue hover:text-primary-blue/80 transition duration-300 text-2xl"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <form action="#" id="contactForm" class="space-y-4">
+                        <div id="form-message" class="hidden p-3 rounded-lg text-center font-semibold" style="background-color: #155724; color: #d4edda; border: 1px solid #c3e6cb;">
+                            Thank you! Your message has been sent successfully.
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-text-light mb-1">Name</label>
+                                <input type="text" id="name" placeholder="Enter your name" required class="w-full p-3 bg-[#3e3e60] border border-[#5a5a7c] rounded-lg focus:ring-primary-blue focus:border-primary-blue text-text-light">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-text-light mb-1">Email</label>
+                                <input type="email" id="email" placeholder="Enter your email" required class="w-full p-3 bg-[#3e3e60] border border-[#5a5a7c] rounded-lg focus:ring-primary-blue focus:border-primary-blue text-text-light">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-text-light mb-1">Subject</label>
+                            <input type="text" id="subject" placeholder="Subject" required class="w-full p-3 bg-[#3e3e60] border border-[#5a5a7c] rounded-lg focus:ring-primary-blue focus:border-primary-blue text-text-light">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-text-light mb-1">Message</label>
+                            <textarea id="message" rows="4" placeholder="Your message..." required class="w-full p-3 bg-[#3e3e60] border border-[#5a5a7c] rounded-lg focus:ring-primary-blue focus:border-primary-blue text-text-light"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 bg-primary-blue text-white font-bold rounded-lg hover:bg-primary-blue/80 transition duration-300">
+                            SEND MESSAGE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark-bg border-t border-primary-blue/50 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-secondary-gray">
+            &copy; 2024 Al-Fuzayel. All rights reserved. | Developed with <i class="fa-solid fa-heart text-red-500"></i>
+        </div>
+    </footer>
+
+    <button id="scrollToTopBtn" class="bg-primary-blue text-white p-3 rounded-full shadow-lg hover:bg-primary-blue/80 transition duration-300" aria-label="Scroll to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true' || false;
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- SKILL BAR ANIMATION ---
+        const skillBars = document.querySelectorAll('.skill-bar-fill');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const percent = bar.getAttribute('data-percent');
+                    bar.style.width = `${percent}%`;
+                    observer.unobserve(bar);
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        skillBars.forEach(bar => {
+            bar.style.width = '0%';
+            observer.observe(bar);
+        });
+
+        // --- CONTACT FORM SUBMISSION FEEDBACK ---
+        const contactForm = document.getElementById('contactForm');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            // Show success message
+            formMessage.classList.remove('hidden');
+            
+            // Clear the form fields
+            this.reset();
+            
+            // Clear message and show form again after a few seconds
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 5000); // 5 seconds
+        });
+        
+        // --- SCROLL TO TOP FUNCTIONALITY (New Feature) ---
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        const rootElement = document.documentElement;
+
+        function handleScroll() {
+            // Show button when user scrolls down 200px from the top
+            if (rootElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add("show");
+            } else {
+                scrollToTopBtn.classList.remove("show");
+            }
+        }
+
+        function scrollToTop() {
+            // Scroll smoothly to the top
+            rootElement.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        // Add event listeners
+        document.addEventListener("scroll", handleScroll);
+        scrollToTopBtn.addEventListener("click", scrollToTop);
+    </script>
+</body>
+</html>
